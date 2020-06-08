@@ -31,7 +31,7 @@ public class SchoolController {
 
         School school = new School();
         if(id!=null) {
-            Optional<School> optionalSchool = repository.findById();
+            Optional<School> optionalSchool = repository.findById(id);
             if (optionalSchool.isPresent()) {
                 school = optionalSchool.get();
             }
@@ -42,8 +42,7 @@ public class SchoolController {
     @PostMapping("/school")
     public String postSchool(@ModelAttribute School school) {
 
-        // TODO : create or update a school
-
+        repository.save(school);
         return "redirect:/schools";
     }
 
