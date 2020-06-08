@@ -49,8 +49,7 @@ public class SchoolController {
     @GetMapping("/school/delete")
     public String deleteSchool(@RequestParam Long id) {
 
-        // TODO : delete a school
-
+        repository.deleteById(id);
         return "redirect:/schools";
     }
 }
