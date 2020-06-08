@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Optional;
+
 @Controller
 public class SchoolController {
 
@@ -27,8 +29,13 @@ public class SchoolController {
     public String getSchool(Model model,
                             @RequestParam(required = false) Long id) {
 
-        // TODO : find one school by id
-
+        School school = new School();
+        if(id!=null) {
+            Optional<School> optionalSchool = repository.findById();
+            if (optionalSchool.isPresent()) {
+                school = optionalSchool.get();
+            }
+        }
         return "school";
     }
 
