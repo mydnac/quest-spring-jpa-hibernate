@@ -19,8 +19,7 @@ public class SchoolController {
     @GetMapping("/schools")
     public String getAll(Model model) {
 
-        // TODO : find all schools
-
+        model.addAttribute("schools", repository.findAll());
         return "schools";
     }
 
