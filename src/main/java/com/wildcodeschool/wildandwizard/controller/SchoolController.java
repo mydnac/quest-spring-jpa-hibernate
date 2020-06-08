@@ -1,55 +1,43 @@
 package com.wildcodeschool.wildandwizard.controller;
 
 import com.wildcodeschool.wildandwizard.entity.School;
+import com.wildcodeschool.wildandwizard.entity.Wizard;
 import com.wildcodeschool.wildandwizard.repository.SchoolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
+@RequestMapping("/schools")
 public class SchoolController {
 
     @Autowired
     private SchoolRepository repository;
 
-    @GetMapping("/schools")
-    public String getAll(Model model) {
-
-        model.addAttribute("schools", repository.findAll());
-        return "schools";
+    @GetMapping()
+    public List<School> getAll() {
+        return repository.findAll();
     }
 
-    @GetMapping("/school")
-    public String getSchool(Model model,
-                            @RequestParam(required = false) Long id) {
+    @GetMapping("/{id}")
+    public School getSchoolById(@PathVariable Long id) {
 
-        School school = new School();
-        if(id!=null) {
-            Optional<School> optionalSchool = repository.findById(id);
-            if (optionalSchool.isPresent()) {
-                school = optionalSchool.get();
-            }
-        }
-        return "school";
+        return repository.findById(id).get();
     }
 
-    @PostMapping("/school")
-    public String postSchool(@ModelAttribute School school) {
+    @PostMapping()
+    public School postSchool(@RequestBody School school) {
 
-        repository.save(school);
-        return "redirect:/schools";
+        return repository.save(school);
     }
 
-    @GetMapping("/school/delete")
-    public String deleteSchool(@RequestParam Long id) {
+    @DeleteMapping("/{id}")
+    public boolean deleteSchool(@PathVariable Long id) {
 
-        repository.deleteById(id);
-        return "redirect:/schools";
+         repository.deleteById(id);
+         return true;
     }
 }
